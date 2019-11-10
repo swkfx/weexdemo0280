@@ -1,0 +1,80 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+    repositories {
+        google()
+        maven(){
+            url 'https://maven.aliyun.com/repository/google'
+        }
+        jcenter(){
+            url 'https://maven.aliyun.com/repository/jcenter'
+        }
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.3.2'
+        
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+        
+    }
+}
+
+
+subprojects {
+    if(project.hasProperty('external_script')){
+        for(item in external_script.split()) {
+            apply from: item
+        }
+    }
+    repositories {
+        if(project.hasProperty('external_repositories')){
+            maven {
+                url external_repositories
+            }
+        }
+        google()
+        maven(){
+            url 'https://maven.aliyun.com/repository/google'
+        }
+        jcenter(){
+            url 'https://maven.aliyun.com/repository/jcenter'
+        }
+    }
+    buildscript {
+        dependencies {
+            classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.0'
+            classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
+        }
+        repositories {
+            google()
+            maven(){
+                url 'https://maven.aliyun.com/repository/google'
+            }
+            jcenter(){
+                url 'https://maven.aliyun.com/repository/jcenter'
+            }
+        }
+    }
+}
+ext {
+    compileSdkVersion=28
+    minSdkVersion=14
+    targetSdkVersion=28
+    supportLibVersion="26.0.2"
+    fastjsonLibVersion="1.1.70.android"
+    //Default value for disableCov is false
+    disableCov = project.hasProperty("disableCov") && disableCov.equals("true")
+    useApachePackageName = project.hasProperty('apachePackageName') ? project.property('apachePackageName').toBoolean() : true
+    implementFromWeex = true
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}

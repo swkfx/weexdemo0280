@@ -1,0 +1,4 @@
+rootProject.name='WeexDemo0280'
+include ':app'
+include ":weex_sdk"
+project(":weex_sdk").projectDir = new File("./weex/sdk")
